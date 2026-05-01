@@ -1,18 +1,24 @@
-#include <Arduino.h>
+/**
+ * Filename: main.cpp
+ * Author: Garrett Forsyth
+ * Date: May 1 2026
+ * Description: 
+ * This program initializes all sensors, then defers to their loop
+ * implementation. When new data is read, it is published to the
+ * MQTT server.
+ */
+#include "config.h"
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include "sensors/DS18B20.h"
 
-// put function declarations here:
-int myFunction(int, int);
+DS18B20 tempSensor = DS18B20(DS18B20_GPIO_PIN);
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+void setup(void) {
+  Serial.begin(9600);
+  tempSensor.begin();
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void loop(void) {
+  tempSensor.loop();
 }
