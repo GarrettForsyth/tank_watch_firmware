@@ -27,8 +27,10 @@ public:
     /**
      * Called during program loop. Checks if it is time
      * to read the sensor data and if so does.
+     * 
+     * Returns bool: true if a value was read; false otherwise
      */
-    void loop();
+    bool loop();
 
     /**
      * Deconstructor for children to chain call.

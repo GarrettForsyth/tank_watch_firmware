@@ -1,9 +1,13 @@
 #include "Sensor.h"
 #include <Arduino.h>
 
-void Sensor::loop() {
+bool Sensor::loop() {
+    bool wasRead = false;
     if (millis() - lastRead > interval) {
         read();
         lastRead = millis();
+        wasRead = true;
     }
+
+    return wasRead;
 }

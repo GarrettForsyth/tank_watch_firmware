@@ -20,5 +20,9 @@ void setup(void) {
 }
 
 void loop(void) {
-  tempSensor.loop();
+  if (tempSensor.loop()) {
+    float temp = tempSensor.getTemperature();
+    Serial.print("Temperature: ");
+    Serial.println(temp);
+  };
 }

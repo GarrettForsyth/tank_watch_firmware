@@ -7,16 +7,12 @@ void DS18B20::begin() {
 }
 
 void DS18B20::read() {
-    // TODO: For now, just print the readings to the console,
-    // but in the future we shold publish them to MQTT or
-    // return the value so a more specialized object can publish
+    sensors.requestTemperatures();
+    lastReadTemperature = sensors.getTempCByIndex(0);
+}
 
-    Serial.print("Requesting temperatures...");
-    sensors.requestTemperatures(); // Send the command to get temperatures
-    Serial.println("DONE");
-
-    Serial.print("Temperature: ");
-    Serial.println(sensors.getTempCByIndex(0));
+float DS18B20::getTemperature() {
+    return lastReadTemperature;
 }
 
 DS18B20::~DS18B20() {}
