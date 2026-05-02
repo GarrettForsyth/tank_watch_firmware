@@ -9,8 +9,6 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define ONE_WIRE_BUS 4
-
 class DS18B20: public Sensor {
 public:
     /**
@@ -28,6 +26,7 @@ public:
 
     void begin() override;
     void read() override;
+    const char* getModel() override;
     ~DS18B20() override;
 private:
     OneWire oneWire;

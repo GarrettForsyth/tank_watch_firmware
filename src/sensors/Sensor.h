@@ -33,6 +33,11 @@ public:
     bool loop();
 
     /**
+     * Gets a string of the model name of the sensor.
+     */
+    virtual const char* getModel() = 0;
+
+    /**
      * Deconstructor for children to chain call.
      */
     virtual ~Sensor() {};

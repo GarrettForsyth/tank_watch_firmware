@@ -15,4 +15,6 @@ float DS18B20::getTemperature() {
     return lastReadTemperature;
 }
 
+const char* DS18B20::getModel() { return "DS18B20"; }
+
 DS18B20::~DS18B20() {}
