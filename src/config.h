@@ -16,6 +16,8 @@
 #define WIFI_PASSWORD SECRET_WIFI_PASSWORD
 #define MQTT_BROKER_IP SECRET_MQTT_BROKER_IP
 #define MQTT_BROKER_PORT SECRET_MQTT_BROKER_PORT
+#define MOSQUITTO_USERNAME SECRET_MOSQUITTO_USERNAME
+#define MOSQUITTO_PASSWORD SECRET_MOSQUITTO_PASSWROD
 
 /*******************************************************************************
  * Sensor Configuration 

@@ -69,7 +69,7 @@ void MQTTService::connectWifi() {
 void MQTTService::connectMQTT() {
     while (!mqttClient.connected()) {
         Serial.print("Connecting to MQTT broker...");
-        if (mqttClient.connect(deviceId)) {
+        if (mqttClient.connect(deviceId, MOSQUITTO_USERNAME, MOSQUITTO_PASSWORD)) {
             Serial.println(" connected");
         } else {
             Serial.print(" failed, rc=");
