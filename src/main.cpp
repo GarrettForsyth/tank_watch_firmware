@@ -27,7 +27,8 @@ void loop(void) {
   if (tempSensor.loop()) {
     float temp = tempSensor.getTemperature();
     const char* model = tempSensor.getModel();
-    mqttService.publishTemperature(temp, model);
+    const char* id = tempSensor.getId();
+    mqttService.publishTemperature(temp, model, id);
   };
 
   mqttService.loop();

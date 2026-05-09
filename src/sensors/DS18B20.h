@@ -27,9 +27,16 @@ public:
     void begin() override;
     void read() override;
     const char* getModel() override;
+    const char* getId() override;
     ~DS18B20() override;
 private:
+    const static uint8_t ROM_SENSOR_ADDRESS_SIZE = 17; // 16 hex char + terminator 
+    const char* MODEL_NAME = "DS18B20";
+
+    char romSensorAddress[ROM_SENSOR_ADDRESS_SIZE]; // 0's on read failure
+    float lastReadTemperature = 0;
     OneWire oneWire;
     DallasTemperature sensors;
-    float lastReadTemperature = 0;
+
+    void readRomSensorAddress(); // Call only after sensors.begin()
 };

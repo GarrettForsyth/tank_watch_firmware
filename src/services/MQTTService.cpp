@@ -31,7 +31,11 @@ void MQTTService::loop() {
     mqttClient.loop();
 }
 
-void MQTTService::publishTemperature(float celsius, const char* sensorModel) {
+void MQTTService::publishTemperature(
+    float celsius,
+    const char* sensorModel,
+    const char* sensorId
+) {
     if (!mqttClient.connected()) {
         connectMQTT();
     }
@@ -41,9 +45,10 @@ void MQTTService::publishTemperature(float celsius, const char* sensorModel) {
     snprintf(
         topicWithModel,
         sizeof(topicWithModel),
-        "%s/%s",
+        "%s/%s/%s",
         temperatureTopic,
-        sensorModel
+        sensorModel,
+        sensorId
     );
 
     char payload[PAYLOAD_LENGTH];

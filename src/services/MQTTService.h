@@ -16,7 +16,7 @@
 #include <PubSubClient.h>
 #include <Wifi.h>
 #define BASE_TOPIC_LENGTH 64
-#define MAX_TOPIC_LENGTH 96
+#define MAX_TOPIC_LENGTH 128
 #define PAYLOAD_LENGTH 64
 #define MAC_LENGTH 13 // Sanitized after removing ':'
 
@@ -46,8 +46,13 @@ public:
      * Parameters:
      * celsius: The temperature value in celsius.
      * sensorModel: The model name for the sensor reading.
+     * sensorId: The sensor id for the sensor reading.
      */
-    void publishTemperature(float celsius, const char* sensorModel);
+    void publishTemperature(
+        float celsius,
+        const char* sensorModel,
+        const char* sensorId
+    );
 
 private:
     WiFiClient wifiClient;

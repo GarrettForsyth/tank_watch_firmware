@@ -38,6 +38,12 @@ public:
     virtual const char* getModel() = 0;
 
     /**
+     * Get's a unique identifer for the sensor.
+     * (Ex/ ROM address or hardware ID)
+     */
+    virtual const char* getId() = 0;
+
+    /**
      * Deconstructor for children to chain call.
      */
     virtual ~Sensor() {};
