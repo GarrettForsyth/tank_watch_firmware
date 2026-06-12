@@ -1,13 +1,13 @@
 # TankWatch — Firmware
 
-TankWatch is a personal IoT aquarium monitoring system. I'm building it collect data to help me understand what's 'really' happening inside my aquarium. I hope for it to one day give me insight
+TankWatch is a personal IoT aquarium monitoring system. I'm building it to collect data to help me understand what's 'really' happening inside my aquarium. I hope for it to one day give me insight
 into why my fish and plants thrive.. or not. Plus it's a fun intersection between my interest in coding and fishkeeping.
 
 Right now, the key features are:
 - Visualizing historical sensor data through a mobile client app 
 - Receiving alert notifications when sensor readings breach a configured threshold
 
-The idea is sensors connected to a ESP32 board publish to an MQTT broker hosted in the cloud. The backend monitors incoming reading and alerts the mobile client when they breach their configured threshold. The backend also offers an API for the mobile client to gather historical sensor data.
+The idea is sensors connected to an ESP32 board publish to an MQTT broker hosted in the cloud. The backend monitors incoming readings and alerts the mobile client when they breach their configured threshold. The backend also offers an API for the mobile client to gather historical sensor data.
 
 This repo contains the ESP32 firmware: C++ (Arduino framework), PlatformIO, DS18B20 temperature sensing, and MQTT publishing.
 
@@ -17,8 +17,7 @@ This repo contains the ESP32 firmware: C++ (Arduino framework), PlatformIO, DS18
 
 ## Demo
 
-<!-- Replace with your video embed or GIF once recorded -->
-> 📹 Demo video coming soon
+![TankWatch Demo](docs/tankwatch_demo.gif)
 
 ---
 
