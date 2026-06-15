@@ -54,11 +54,26 @@ public:
         const char* sensorId
     );
 
+    /**
+     * Publish liquid detection status data to the MQTT broker.
+     * 
+     * Parameters:
+     * status: 0x1 if liquid is detected; 0x0 otherwise
+     * sensorModel: The model name for the sensor reading.
+     * sensorId: The sensor id for the sensor reading.
+     */
+    void publishLiquidStatus(
+        int status,
+        const char* sensorModel,
+        const char* sensorId
+    );
+
 private:
     WiFiClient wifiClient;
     PubSubClient mqttClient;
     char deviceId[MAC_LENGTH];
     char temperatureTopic[BASE_TOPIC_LENGTH];
+    char liquidStatusTopic[BASE_TOPIC_LENGTH];
     void connectWifi();
     void connectMQTT();
 };
