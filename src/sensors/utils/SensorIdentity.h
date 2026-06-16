@@ -5,6 +5,9 @@
  * Description:
  * To uniquely identify each sesnor, we'll generate a random ID and
  * store it in the device preferences using the model_gpio as a key.
+ * 
+ * Note: This key naming convention might need to be rethought if
+ * sensors on I2C/SPI are introduced, but for now it works.
  */
 #pragma once
 #include <Preferences.h>

@@ -7,11 +7,11 @@
  * though this could be changed using the phsyical switch on the sensor.
  */
 #pragma once
-#include "Sensor.h"
+#include "SensorGPIO.h"
 #include <stdint.h>
 #include "esp32-hal-gpio.h"
 
-class LiquidSensor: public Sensor {
+class LiquidSensor: public SensorGPIO {
 public:
 
     /**
@@ -20,7 +20,7 @@ public:
      * Parameters:
      * pin: The GPIO to use for this sensor.
      */
-    LiquidSensor(uint8_t pin);
+    LiquidSensor(uint8_t pin): SensorGPIO(pin) {};
 
     /**
      * Gets the status of the sensor.
@@ -34,10 +34,8 @@ public:
     const char* getReading() override;
     const SensorType getType() override;
     const char* getModel() override;
-    const char* getId() override;
     ~LiquidSensor() override;
 private:
-    const uint8_t GPIO_PIN;
     const char* MODEL_NAME = "CQRSENYW001"; // From http://www.cqrobot.wiki/index.php/Non-Contact_Water/Liquid_Level_Sensor_SKU:_CQRSENYW001
     float lastReadStatus = LOW;
 };

@@ -37,7 +37,6 @@ void MQTTService::publishReading(Sensor* sensor) {
     }
 
     // Determine the topic to publish to
-    Serial.printf("Creating topic..\n"); 
     char fullTopic[MAX_TOPIC_LENGTH];
     snprintf(
         fullTopic,
