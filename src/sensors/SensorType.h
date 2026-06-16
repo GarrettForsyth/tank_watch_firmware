@@ -7,7 +7,8 @@
 #pragma once
 enum class SensorType {
     Temperature,
-    Liquid
+    Liquid,
+    Tds
 };
 
 /**

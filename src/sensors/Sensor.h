@@ -11,6 +11,7 @@
 #pragma once
 #include "config.h"
 #include "SensorType.h"
+#include "SensorValue.h"
 #include "stdint.h"
 
 class Sensor {
@@ -32,12 +33,12 @@ public:
      * 
      * Returns bool: true if a value was read; false otherwise
      */
-    bool loop();
+    virtual bool loop();
 
     /**
      * Get reading string as it should be published.
      */
-    virtual const char* getReading() = 0;
+    virtual const SensorValue getReading() = 0;
 
     /**
      * Get type of sensor.

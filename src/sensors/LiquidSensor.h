@@ -22,16 +22,9 @@ public:
      */
     LiquidSensor(uint8_t pin): SensorGPIO(pin) {};
 
-    /**
-     * Gets the status of the sensor.
-     * Returns: HIGH (0x1) when water is detected
-     * and LOW (0x0) if not.
-     */
-    int getStatus();
-
     void begin() override;
     void read() override;
-    const char* getReading() override;
+    const SensorValue getReading() override;
     const SensorType getType() override;
     const char* getModel() override;
     ~LiquidSensor() override;

@@ -24,6 +24,8 @@
  ******************************************************************************/
 #define DS18B20_GPIO_PIN 4
 #define LIQUID_SENSOR_GPIO_PIN 34
+#define TDS_SENSOR_GPIO_PIN 35
+#define CQRSENTDS01_GPIO_PIN 35
 
 // TODO: In the future, we could hae more resolved
 // read intervals (e.g. each sensor could be configured)

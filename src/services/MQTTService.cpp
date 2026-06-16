@@ -1,4 +1,5 @@
 #include "MQTTService.h"
+#include "sensors/SensorValue.h"
 #include "config.h"
 #include <Arduino.h>
 
@@ -48,12 +49,14 @@ void MQTTService::publishReading(Sensor* sensor) {
         sensor->getId()
     );
 
+    char readingBuf[SensorValue::SENSOR_VALUE_SIZE] = { 0 };
+    sensor->getReading().toString(readingBuf, sizeof(readingBuf));
     char payload[PAYLOAD_LENGTH];
     snprintf(
         payload,
         sizeof(payload),
         "{\"value\":%s}",
-        sensor->getReading()
+        readingBuf
     );
     mqttClient.publish(fullTopic, payload);
 }
