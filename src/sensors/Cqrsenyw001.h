@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include "esp32-hal-gpio.h"
 
-class LiquidSensor: public SensorGPIO {
+class Cqrsenyw001: public SensorGPIO {
 public:
 
     /**
@@ -20,14 +20,14 @@ public:
      * Parameters:
      * pin: The GPIO to use for this sensor.
      */
-    LiquidSensor(uint8_t pin): SensorGPIO(pin) {};
+    Cqrsenyw001(uint8_t pin): SensorGPIO(pin) {};
 
     void begin() override;
     void read() override;
     const SensorValue getReading() override;
     const SensorType getType() override;
     const char* getModel() override;
-    ~LiquidSensor() override;
+    ~Cqrsenyw001() {};
 private:
     const char* MODEL_NAME = "CQRSENYW001"; // From http://www.cqrobot.wiki/index.php/Non-Contact_Water/Liquid_Level_Sensor_SKU:_CQRSENYW001
     float lastReadStatus = LOW;

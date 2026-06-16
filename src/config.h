@@ -23,8 +23,7 @@
  * Sensor Configuration 
  ******************************************************************************/
 #define DS18B20_GPIO_PIN 4
-#define LIQUID_SENSOR_GPIO_PIN 34
-#define TDS_SENSOR_GPIO_PIN 35
+#define CQRSENYW001_GPIO_PIN 34
 #define CQRSENTDS01_GPIO_PIN 35
 
 // TODO: In the future, we could hae more resolved

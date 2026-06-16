@@ -11,7 +11,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include "sensors/DS18B20.h"
-#include "sensors/LiquidSensor.h"
+#include "sensors/Cqrsenyw001.h"
 #include "sensors/Cqrsentds01.h"
 #include "services/MQTTService.h"
 #include "services/SensorBroker.h"
@@ -19,7 +19,7 @@
 
 Sensor* sensors[] = {
   new DS18B20(DS18B20_GPIO_PIN),
-  new LiquidSensor(LIQUID_SENSOR_GPIO_PIN),
+  new Cqrsenyw001(CQRSENYW001_GPIO_PIN),
   new Cqrsentds01(CQRSENTDS01_GPIO_PIN)
 };
 MQTTService mqttService = MQTTService();
