@@ -42,6 +42,16 @@ float DS18B20::getTemperature() {
     return lastReadTemperature;
 }
 
+const char* DS18B20::getReading() {
+    static char readingStr[READING_SIZE] = { 0 }; 
+    snprintf(readingStr, sizeof(readingStr), "%f", getTemperature());
+    return readingStr;
+}
+
+const SensorType DS18B20::getType() {
+    return SensorType::Temperature;
+}
+
 const char* DS18B20::getModel() { return MODEL_NAME; }
 
 const char* DS18B20::getId() { return romSensorAddress; }

@@ -10,6 +10,8 @@
  */
 #pragma once
 #include "config.h"
+#include "SensorType.h"
+#include "stdint.h"
 
 class Sensor {
 public:
@@ -31,6 +33,16 @@ public:
      * Returns bool: true if a value was read; false otherwise
      */
     bool loop();
+
+    /**
+     * Get reading string as it should be published.
+     */
+    virtual const char* getReading() = 0;
+
+    /**
+     * Get type of sensor.
+     */
+    virtual const SensorType getType() = 0;
 
     /**
      * Gets a string of the model name of the sensor.
@@ -59,4 +71,9 @@ protected:
      * The millis time from epoch the sensor was last read. 
      */
     unsigned long lastRead = 0;
+
+    /**
+     * Buffer size sensor's publish their reading data to.
+     */
+    const static uint8_t READING_SIZE = 32; 
 };

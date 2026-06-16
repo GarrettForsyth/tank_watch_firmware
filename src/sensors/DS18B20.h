@@ -8,6 +8,7 @@
 #include "Sensor.h"
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include "SensorType.h"
 
 class DS18B20: public Sensor {
 public:
@@ -26,6 +27,8 @@ public:
 
     void begin() override;
     void read() override;
+    const char* getReading() override;
+    const SensorType getType() override;
     const char* getModel() override;
     const char* getId() override;
     ~DS18B20() override;

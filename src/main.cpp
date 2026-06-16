@@ -15,31 +15,26 @@
 #include "services/MQTTService.h"
 #include <Wifi.h>
 
-DS18B20 tempSensor = DS18B20(DS18B20_GPIO_PIN);
-LiquidSensor liquidSensor = LiquidSensor(LIQUID_SENSOR_GPIO_PIN);
+
+Sensor* sensors[] = {
+  new DS18B20(DS18B20_GPIO_PIN),
+  new LiquidSensor(LIQUID_SENSOR_GPIO_PIN)
+};
 MQTTService mqttService = MQTTService();
 
 void setup(void) {
   Serial.begin(9600);
-  tempSensor.begin();
-  liquidSensor.begin();
+  for (Sensor* sensor : sensors) {
+    sensor->begin();
+  }
   mqttService.begin();
 }
 
 void loop(void) {
-  if (tempSensor.loop()) {
-    float temp = tempSensor.getTemperature();
-    const char* model = tempSensor.getModel();
-    const char* id = tempSensor.getId();
-    mqttService.publishTemperature(temp, model, id);
-  };
-
-  if (liquidSensor.loop()) {
-    int status = liquidSensor.getStatus();
-    const char* model = liquidSensor.getModel();
-    const char* id = liquidSensor.getId();
-    mqttService.publishLiquidStatus(status, model, id);
+  for (Sensor* sensor : sensors) {
+    if (sensor->loop()) {
+      mqttService.publishReading(sensor);
+    }
   }
-
   mqttService.loop();
 }

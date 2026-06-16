@@ -15,6 +15,7 @@
 #pragma once
 #include <PubSubClient.h>
 #include <Wifi.h>
+#include  "./sensors/Sensor.h"
 #define BASE_TOPIC_LENGTH 64
 #define MAX_TOPIC_LENGTH 128
 #define PAYLOAD_LENGTH 64
@@ -68,12 +69,16 @@ public:
         const char* sensorId
     );
 
+    /**
+     * Publish a sensor reading to the MQTT broker.
+     */ 
+    void publishReading(Sensor* sensor);
+
 private:
     WiFiClient wifiClient;
     PubSubClient mqttClient;
     char deviceId[MAC_LENGTH];
-    char temperatureTopic[BASE_TOPIC_LENGTH];
-    char liquidStatusTopic[BASE_TOPIC_LENGTH];
+    char topicBase[BASE_TOPIC_LENGTH];
     void connectWifi();
     void connectMQTT();
 };

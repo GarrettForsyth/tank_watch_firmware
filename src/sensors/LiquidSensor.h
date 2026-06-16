@@ -31,6 +31,8 @@ public:
 
     void begin() override;
     void read() override;
+    const char* getReading() override;
+    const SensorType getType() override;
     const char* getModel() override;
     const char* getId() override;
     ~LiquidSensor() override;

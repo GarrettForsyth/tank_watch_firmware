@@ -12,18 +12,11 @@ void MQTTService::begin() {
     mac.replace(":", "");
     strlcpy(deviceId, mac.c_str(), sizeof(deviceId));
 
-    // Set the topic strings using the device id
+    // Set the base topic string using the device id
     snprintf(
-        temperatureTopic,
-        sizeof(temperatureTopic),
-        "tankwatch/%s/readings/temperature",
-        deviceId
-    );
-
-    snprintf(
-        liquidStatusTopic,
-        sizeof(liquidStatusTopic),
-        "tankwatch/%s/readings/liquid_status",
+        topicBase,
+        sizeof(topicBase),
+        "tankwatch/%s/readings",
         deviceId
     );
 
@@ -38,64 +31,32 @@ void MQTTService::loop() {
     mqttClient.loop();
 }
 
-void MQTTService::publishTemperature(
-    float celsius,
-    const char* sensorModel,
-    const char* sensorId
-) {
+void MQTTService::publishReading(Sensor* sensor) {
     if (!mqttClient.connected()) {
         connectMQTT();
     }
 
-    // Add the sensor model to the temperature topic
-    char topicWithModel[MAX_TOPIC_LENGTH];
+    // Determine the topic to publish to
+    Serial.printf("Creating topic..\n"); 
+    char fullTopic[MAX_TOPIC_LENGTH];
     snprintf(
-        topicWithModel,
-        sizeof(topicWithModel),
-        "%s/%s/%s",
-        temperatureTopic,
-        sensorModel,
-        sensorId
+        fullTopic,
+        sizeof(fullTopic),
+        "%s/%s/%s/%s",
+        topicBase,
+        sensorTypeName(sensor->getType()),
+        sensor->getModel(),
+        sensor->getId()
     );
 
     char payload[PAYLOAD_LENGTH];
     snprintf(
         payload,
         sizeof(payload),
-        "{\"value\":%f}",
-        celsius
+        "{\"value\":%s}",
+        sensor->getReading()
     );
-    mqttClient.publish(topicWithModel, payload);
-}
-
-void MQTTService::publishLiquidStatus(
-    int status,
-    const char* sensorModel,
-    const char* sensorId
-) {
-    if (!mqttClient.connected()) {
-        connectMQTT();
-    }
-
-    // Add the sensor model to the liquid sensor topic
-    char topicWithModel[MAX_TOPIC_LENGTH];
-    snprintf(
-        topicWithModel,
-        sizeof(topicWithModel),
-        "%s/%s/%s",
-        liquidStatusTopic,
-        sensorModel,
-        sensorId
-    );
-
-    char payload[PAYLOAD_LENGTH];
-    snprintf(
-        payload,
-        sizeof(payload),
-        "{\"value\":%d}",
-        status
-    );
-    mqttClient.publish(topicWithModel, payload);
+    mqttClient.publish(fullTopic, payload);
 }
 
 void MQTTService::connectWifi() {

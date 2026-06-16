@@ -21,4 +21,14 @@ const char* LiquidSensor::getId() {
     return getOrCreateSensorId(MODEL_NAME, GPIO_PIN); 
 }
 
+const char* LiquidSensor::getReading() {
+    static char readingStr[READING_SIZE] = { 0 }; 
+    snprintf(readingStr, sizeof(readingStr), "%d", getStatus());
+    return readingStr;
+}
+
+const SensorType LiquidSensor::getType() {
+    return SensorType::Liquid;
+}
+
 LiquidSensor::~LiquidSensor() {}
