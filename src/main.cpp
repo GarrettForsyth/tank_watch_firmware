@@ -13,6 +13,7 @@
 #include "sensors/DS18B20.h"
 #include "sensors/Cqrsenyw001.h"
 #include "sensors/Cqrsentds01.h"
+#include "sensors/PhMeterV11.h"
 #include "services/MQTTService.h"
 #include "services/SensorBroker.h"
 #include <Wifi.h>
@@ -20,7 +21,8 @@
 Sensor* sensors[] = {
   new DS18B20(DS18B20_GPIO_PIN),
   new Cqrsenyw001(CQRSENYW001_GPIO_PIN),
-  new Cqrsentds01(CQRSENTDS01_GPIO_PIN)
+  new Cqrsentds01(CQRSENTDS01_GPIO_PIN),
+  new PhMeterV11(PH_METER_V_1_1_GPIO_PIN)
 };
 MQTTService mqttService = MQTTService();
 
@@ -43,5 +45,6 @@ void loop(void) {
       mqttService.publishReading(sensor);
     }
   }
+
   mqttService.loop();
 }

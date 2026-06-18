@@ -22,6 +22,3 @@
  * Returns: A 128-bit random id unique to this sesnor.
  */
 const char* getOrCreateSensorId(const char* model, uint8_t gpio);
-
-static const int MAX_KEY_LENGTH = 16;
-static const int MAX_VALUE_LENGTH = 33;

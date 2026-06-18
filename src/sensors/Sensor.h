@@ -57,6 +57,11 @@ public:
     virtual const char* getId() = 0;
 
     /**
+     * Logic to calibrate the sensor.
+     */
+    virtual void calibrate() {}
+
+    /**
      * Deconstructor for children to chain call.
      */
     virtual ~Sensor() {};

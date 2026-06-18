@@ -5,11 +5,10 @@
 #include <string.h>
 #include <algorithm>
 
-Cqrsentds01::Cqrsentds01(
-    uint8_t pin,
-    unsigned long publishIntervalMs
-):  SensorGPIO(pin),
-    _publishIntervalMs(publishIntervalMs),
+constexpr const int TDS_SAMPLE_INTERVAL_MS = 40;
+constexpr const int TDS_DEFAULT_TEMP_CALB = 30;
+
+Cqrsentds01::Cqrsentds01(uint8_t pin):  SensorGPIO(pin),
     _lastSampleTime(0),
     _lastPublishTime(0),
     _sampleIndex(0),
@@ -26,7 +25,7 @@ void Cqrsentds01::begin() {
 void Cqrsentds01::read() {
     // Read the analog voltage from a more stable value by filtering the median
     // NOTE: ESP32 has 12 bit Analog-Digital-Converter (this differs compared to the datasheet example)
-    float voltage = getMedian() * VREF / ADC_RESOLUTION;
+    float voltage = getMedian() * ADC_MAX / ADC_MAX;
     float temp = SensorBroker::getInstance().getLatest(
         SensorType::Temperature,
         SensorValue::ofFloat(TDS_DEFAULT_TEMP_CALB)
@@ -55,7 +54,7 @@ bool Cqrsentds01::loop() {
     }
 
     // Update the latest reading if it's time
-    if (now - _lastPublishTime >= _publishIntervalMs) {
+    if (now - _lastPublishTime >= interval) {
         _lastPublishTime = now;
         read();
         return true;

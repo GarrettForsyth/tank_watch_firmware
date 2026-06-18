@@ -8,7 +8,8 @@
 enum class SensorType {
     Temperature,
     Liquid,
-    Tds
+    Tds,
+    Ph
 };
 
 /**

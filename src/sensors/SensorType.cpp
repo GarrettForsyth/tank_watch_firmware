@@ -5,6 +5,7 @@ const char* sensorTypeName(SensorType type) {
         case SensorType::Temperature: return "temperature";
         case SensorType::Liquid:      return "liquid";
         case SensorType::Tds:         return "tds";
+        case SensorType::Ph:          return "ph";
         default:                      return "unknown";
     }
 }

@@ -13,15 +13,9 @@
 #pragma once
 #include "SensorGPIO.h"
 
-#define TDS_SAMPLE_COUNT 30
-#define TDS_SAMPLE_INTERVAL_MS 40
-#define TDS_DEFAULT_TEMP_CALB 25.0f
-#define VREF 3.3f
-#define ADC_RESOLUTION 4095.0f
-
 class Cqrsentds01 : public SensorGPIO {
 public:
-    Cqrsentds01(uint8_t pin, unsigned long publishIntervalMs = 3000);
+    Cqrsentds01(uint8_t pin);
 
     void begin() override;
     void read() override;
@@ -34,10 +28,10 @@ public:
 private:
     const char* MODEL_NAME = "CQRSENTDS01";
 
-    unsigned long _publishIntervalMs;
     unsigned long _lastSampleTime;
     unsigned long _lastPublishTime;
 
+    static const int TDS_SAMPLE_COUNT = 30;
     int _sampleBuffer[TDS_SAMPLE_COUNT];
     int _sampleIndex;
 

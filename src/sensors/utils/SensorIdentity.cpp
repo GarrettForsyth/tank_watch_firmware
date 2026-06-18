@@ -2,6 +2,7 @@
 #include "SensorIdentity.h"
 #include "config.h"
 #include <Preferences.h>
+#include "services/NvsConfig.h"
 
 const char* getOrCreateSensorId(const char* model, uint8_t gpio) {
     static char id[MAX_VALUE_LENGTH];
@@ -11,7 +12,7 @@ const char* getOrCreateSensorId(const char* model, uint8_t gpio) {
     snprintf(key, sizeof(key), "%s_%d", model, gpio);
 
     Preferences prefs;
-    prefs.begin(PREFERENCE_NAMESPACE, false);
+    prefs.begin(NVS_NAME_SPACE, false);
 
     if (prefs.isKey(key)) {
         prefs.getString(key, id, sizeof(id));
