@@ -16,7 +16,7 @@
 #include "sensors/PhMeterV11.h"
 #include "services/MQTTService.h"
 #include "services/SensorBroker.h"
-#include <Wifi.h>
+#include <WiFi.h>
 
 Sensor* sensors[] = {
   new DS18B20(DS18B20_GPIO_PIN),

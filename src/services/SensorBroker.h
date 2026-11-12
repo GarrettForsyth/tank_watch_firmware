@@ -9,6 +9,7 @@
  */
 #pragma once
 #include <map>
+#include <string>
 #include "sensors/SensorType.h"
 #include "sensors/SensorValue.h"
 
