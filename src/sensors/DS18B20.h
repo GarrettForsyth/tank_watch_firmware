@@ -26,6 +26,7 @@ public:
     const SensorValue getReading() override;
     const SensorType getType() override;
     const char* getModel() override;
+    bool hasValidReading() override;
     ~DS18B20() override;
 private:
     const char* MODEL_NAME = "DS18B20";

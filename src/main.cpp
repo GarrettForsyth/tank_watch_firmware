@@ -36,7 +36,9 @@ void setup(void) {
 
 void loop(void) {
   for (Sensor* sensor : sensors) {
-    if (sensor->loop()) {
+    // Skip error readings (ex/ a disconnected probe) so they never reach the
+    // broker or other sensors (TDS uses the latest temperature).
+    if (sensor->loop() && sensor->hasValidReading()) {
       SensorBroker::getInstance().publish(
         sensor->getType(),
         sensor->getId(),

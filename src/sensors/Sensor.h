@@ -57,6 +57,13 @@ public:
     virtual const char* getId() = 0;
 
     /**
+     * Whether the latest reading is real data worth publishing.
+     * Sensors override this to flag error values (ex/ a disconnected
+     * DS18B20 reads -127) so they are not published or shared.
+     */
+    virtual bool hasValidReading() { return true; }
+
+    /**
      * Logic to calibrate the sensor.
      */
     virtual void calibrate() {}
