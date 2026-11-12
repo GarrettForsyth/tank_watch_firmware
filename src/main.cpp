@@ -16,7 +16,7 @@
 #include "sensors/PhMeterV11.h"
 #include "services/MQTTService.h"
 #include "services/SensorBroker.h"
-#include <Wifi.h>
+#include <WiFi.h>
 
 Sensor* sensors[] = {
   new DS18B20(DS18B20_GPIO_PIN),
@@ -36,7 +36,9 @@ void setup(void) {
 
 void loop(void) {
   for (Sensor* sensor : sensors) {
-    if (sensor->loop()) {
+    // Skip error readings (ex/ a disconnected probe) so they never reach the
+    // broker or other sensors (TDS uses the latest temperature).
+    if (sensor->loop() && sensor->hasValidReading()) {
       SensorBroker::getInstance().publish(
         sensor->getType(),
         sensor->getId(),

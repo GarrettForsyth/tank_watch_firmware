@@ -14,7 +14,7 @@
  */
 #pragma once
 #include <PubSubClient.h>
-#include <Wifi.h>
+#include <WiFi.h>
 #include  "./sensors/Sensor.h"
 #define BASE_TOPIC_LENGTH 64
 #define MAX_TOPIC_LENGTH 128
