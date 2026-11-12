@@ -25,7 +25,7 @@ void Cqrsentds01::begin() {
 void Cqrsentds01::read() {
     // Read the analog voltage from a more stable value by filtering the median
     // NOTE: ESP32 has 12 bit Analog-Digital-Converter (this differs compared to the datasheet example)
-    float voltage = getMedian() * ADC_MAX / ADC_MAX;
+    float voltage = getMedian() * (ADC_VREF / ADC_MAX);
     float temp = SensorBroker::getInstance().getLatest(
         SensorType::Temperature,
         SensorValue::ofFloat(TDS_DEFAULT_TEMP_CALB)
