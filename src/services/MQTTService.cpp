@@ -6,9 +6,9 @@
 MQTTService::MQTTService(): mqttClient(wifiClient) {}
 
 void MQTTService::begin() {
-    connectWifi();
+    WiFi.mode(WIFI_STA);
+    WiFi.setAutoReconnect(true);  // let the driver retry as well
 
-    // Get the MAC after connection to WIFI
     String mac = WiFi.macAddress();
     mac.replace(":", "");
     strlcpy(deviceId, mac.c_str(), sizeof(deviceId));
@@ -22,20 +22,50 @@ void MQTTService::begin() {
     );
 
     mqttClient.setServer(MQTT_BROKER_IP, MQTT_BROKER_PORT);
-    connectMQTT();
+    mqttClient.setSocketTimeout(SOCKET_TIMEOUT_S);
+
+    WiFi.begin(WIFI_NAME, WIFI_PASSWORD);
+    lastOnlineMs = millis();
 }
 
 void MQTTService::loop() {
-    if (!mqttClient.connected()) {
-        connectMQTT();
+    const uint32_t now = millis();
+
+    if (isOnline()) {
+        lastOnlineMs = now;
+        mqttClient.loop();
+        return;
     }
-    mqttClient.loop();
+
+    if (now - lastOnlineMs >= OFFLINE_RESTART_MS) {
+        Serial.println("Offline for 10 minutes; restarting.");
+        ESP.restart();
+    }
+
+    if (WiFi.status() != WL_CONNECTED) {
+        if (now - lastWifiAttemptMs >= WIFI_RETRY_MS) {
+            lastWifiAttemptMs = now;
+            Serial.printf("Wi-Fi down (status %d); reconnecting...\n", WiFi.status());
+            WiFi.disconnect();
+            WiFi.begin(WIFI_NAME, WIFI_PASSWORD);
+        }
+        return;
+    }
+
+    // If Wi-Fi is connected but MQTT is not, attempt to reconnect to the broker
+    if (now - lastMqttAttemptMs >= MQTT_RETRY_MS) {
+        lastMqttAttemptMs = now;
+        Serial.print("Connecting to MQTT broker...");
+        if (mqttClient.connect(deviceId, MOSQUITTO_USERNAME, MOSQUITTO_PASSWORD)) {
+            Serial.println(" connected");
+        } else {
+            Serial.printf(" failed, rc=%d\n", mqttClient.state());
+        }
+    }
 }
 
 void MQTTService::publishReading(Sensor* sensor) {
-    if (!mqttClient.connected()) {
-        connectMQTT();
-    }
+    if (!isOnline()) return;
 
     // Determine the topic to publish to
     char fullTopic[MAX_TOPIC_LENGTH];
@@ -61,25 +91,6 @@ void MQTTService::publishReading(Sensor* sensor) {
     mqttClient.publish(fullTopic, payload);
 }
 
-void MQTTService::connectWifi() {
-    Serial.print("Connecting to WiFi");
-    WiFi.begin(WIFI_NAME, WIFI_PASSWORD);
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
-    Serial.println(" connected");
-}
-
-void MQTTService::connectMQTT() {
-    while (!mqttClient.connected()) {
-        Serial.print("Connecting to MQTT broker...");
-        if (mqttClient.connect(deviceId, MOSQUITTO_USERNAME, MOSQUITTO_PASSWORD)) {
-            Serial.println(" connected");
-        } else {
-            Serial.print(" failed, rc=");
-            Serial.println(mqttClient.state());
-            delay(2000);
-        }
-    }
+bool MQTTService::isOnline() {
+    return WiFi.status() == WL_CONNECTED && mqttClient.connected();
 }
