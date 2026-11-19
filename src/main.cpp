@@ -17,6 +17,7 @@
 #include "services/MQTTService.h"
 #include "services/SensorBroker.h"
 #include <WiFi.h>
+#include <esp_task_wdt.h>
 
 Sensor* sensors[] = {
   new DS18B20(DS18B20_GPIO_PIN),
@@ -28,6 +29,17 @@ MQTTService mqttService = MQTTService();
 
 void setup(void) {
   Serial.begin(9600);
+
+  const esp_task_wdt_config_t wdtConfig = {
+    .timeout_ms = 30000,    // reset if loop() hasn't come round in 30 s
+    .idle_core_mask = 0,    // don't also watch the idle tasks
+    .trigger_panic = true,  // panic -> reboot, with a backtrace on serial
+  };
+  if (esp_task_wdt_reconfigure(&wdtConfig) != ESP_OK) {
+    Serial.println("WDT reconfigure failed");
+  }
+  enableLoopWDT();          // watch the loop task; the core feeds it before every loop()
+
   for (Sensor* sensor : sensors) {
     sensor->begin();
   }

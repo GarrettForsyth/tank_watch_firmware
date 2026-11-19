@@ -30,7 +30,7 @@ public:
     MQTTService();
 
     /**
-     * Connects to wifi and the mqtt broker.
+     * Connects to wifi.
      * To be called once in main setup.
      */
     void begin();
@@ -75,10 +75,19 @@ public:
     void publishReading(Sensor* sensor);
 
 private:
+    static constexpr uint32_t WIFI_RETRY_MS = 10000;
+    static constexpr uint32_t MQTT_RETRY_MS = 5000;
+    static constexpr uint32_t OFFLINE_RESTART_MS = 10UL * 60 * 1000; // Reboot after 10 minutes
+    static constexpr uint32_t SOCKET_TIMEOUT_S = 5;
+
+    uint32_t lastWifiAttemptMs = 0;
+    uint32_t lastMqttAttemptMs = 0;
+    uint32_t lastOnlineMs = 0;
+
     WiFiClient wifiClient;
     PubSubClient mqttClient;
     char deviceId[MAC_LENGTH];
     char topicBase[BASE_TOPIC_LENGTH];
-    void connectWifi();
-    void connectMQTT();
+
+    bool isOnline();
 };
